@@ -1,6 +1,6 @@
 # vblog-web 博客前端
 
-- 项目预览地址：http://vblog.chacode.cn/#/
+- 项目预览地址：http://blog.bigcypress.cn/#/
 - 官方QQ群(917217378)，Java后端技术与架构探讨~
 - 加个人微信:LFH038188,拉进微信技术交流群,需备注"VBlog"
 
