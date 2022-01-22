@@ -1,17 +1,18 @@
 import axios from 'axios'
 import {Message} from 'element-ui'
 import store from '@/store'
-import {getToken} from '@/request/token'
+import {getToken, removeToken} from '@/request/token'
 
 const service = axios.create({
   baseURL: process.env.BASE_API,
-  timeout: 10000
+  timeout: 180000
 })
 
 //request拦截器
 service.interceptors.request.use(config => {
-  if (store.state.token) {
-    config.headers['Oauth-Token'] = getToken()
+  let token = getToken()
+  if (token) {
+    config.headers['auth-token'] = token.token
   }
   return config
 }, error => {
@@ -27,19 +28,16 @@ service.interceptors.response.use(
     }
 
     const res = response.data;
-
-    //0 为成功状态
-    if (res.code !== 0) {
-
+    //20 为成功状态 500为系统异常
+    if (res.status !== 200 && res.status  !== 500){
       //90001 Session超时
-      if (res.code === 90001) {
+      if (res.status === 90001) {
         return Promise.reject('error');
       }
 
       //401 用户未登录
-      if (res.code === 401) {
+      else if (res.status === 401) {
         console.info("用户未登录")
-
         Message({
           type: 'warning',
           showClose: true,
@@ -52,7 +50,7 @@ service.interceptors.response.use(
       }
 
       //70001 权限认证错误
-      if (res.code === 70001) {
+      else if (res.status === 70001) {
         console.info("权限认证错误")
         Message({
           type: 'warning',
@@ -60,9 +58,17 @@ service.interceptors.response.use(
           message: '你没有权限访问哦'
         })
         return Promise.reject('error');
-      }
+      } else {
+        Message({
+          type: 'warning',
+          showClose: true,
+          message: res.message
+        })
 
-      return Promise.reject(res.msg);
+      }
+      removeToke
+      return Promise.reject(res.message);
+
     } else {
       return response.data;
     }

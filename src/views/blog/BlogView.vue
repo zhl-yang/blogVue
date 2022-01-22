@@ -13,18 +13,18 @@
           <h1 class="me-view-title">{{article.title}}</h1>
           <div class="me-view-author">
             <a class="">
-              <img class="me-view-picture" :src="article.author.avatar"></img>
+              <img class="me-view-picture" :src="author.avatar"></img>
             </a>
             <div class="me-view-info">
-              <span>{{article.author.nickname}}</span>
+              <span>{{author.nickname}}</span>
               <div class="me-view-meta">
                 <span>{{article.createTime | format}}</span>
                 <span>阅读   {{article.viewNum}}</span>
-                <span>评论   {{article.commentNum}}</span>
+                <span>评论   {{comments.length}}</span>
               </div>
             </div>
             <el-button
-              v-if="this.article.author.id == this.$store.state.id"
+              v-if="this.author.id == this.$store.state.id"
               @click="editArticle()"
               style="position: absolute;left: 60%;"
               size="mini"
@@ -33,7 +33,7 @@
               icon="el-icon-edit">编辑</el-button>
           </div>
           <div class="me-view-content">
-            <markdown-editor :editor=article.editor></markdown-editor>
+            <markdown-editor :editor=editor></markdown-editor>
           </div>
 
           <div class="me-view-end">
@@ -47,14 +47,14 @@
 
           <div class="me-view-tag">
             标签：
-            <!--<el-tag v-for="t in article.tags" :key="t.id" class="me-view-tag-item" size="mini" type="success">{{t.tagname}}</el-tag>-->
-            <el-button @click="tagOrCategory('tag', t.id)" size="mini" type="primary" v-for="t in article.tags" :key="t.id" round plain>{{t.tagName}}</el-button>
+            <!--<el-tag v-for="t in tags" :key="t.id" class="me-view-tag-item" size="mini" type="success">{{t.tagname}}</el-tag>-->
+            <el-button @click="tagOrCategory('tag', t.id)" size="mini" type="primary" v-for="t in tags" :key="t.id" round plain>{{t.tagName}}</el-button>
           </div>
 
           <div class="me-view-tag">
             文章分类：
-            <!--<span style="font-weight: 600">{{article.category.categoryname}}</span>-->
-            <el-button @click="tagOrCategory('category', article.category.id)" size="mini" type="primary" round plain>{{article.category.categoryName}}</el-button>
+            <!--<span style="font-weight: 600">{{category.categoryname}}</span>-->
+            <el-button @click="tagOrCategory('category', category.id)" size="mini" type="primary" round plain>{{category.categoryName}}</el-button>
           </div>
 
           <div class="me-view-comment">
@@ -62,7 +62,7 @@
               <el-row :gutter="20">
                 <el-col :span="2">
                   <a class="">
-                    <img class="me-view-picture" :src="avatar"></img>
+                    <img class="me-view-picture" :src="avatar"/>
                   </a>
                 </el-col>
                 <el-col :span="21">
@@ -85,7 +85,7 @@
             </div>
 
             <div class="me-view-comment-title">
-              <span>{{article.commentNum}} 条评论</span>
+              <span>{{comments.length}} 条评论</span>
             </div>
 
             <commment-item
@@ -127,31 +127,37 @@
           viewNum: 0,
           summary: '',
           createTime: '',
-          author: {},
-          tags: [],
-          category:{},
-          editor: {
-            value: '',
-            toolbarsFlag: false,
-            subfield: false,
-            defaultOpen: 'preview'
-          }
+          content: ''
         },
+        author: {
+          avatar: '',
+          id: '',
+          nickname: ''
+        },
+        tags: [],
+        category:{},
+        editor: {
+          value: '',
+          toolbarsFlag: false,
+          subfield: false,
+          defaultOpen: 'preview'
+        },
+
         comments: [],
         comment: {
-          article: {},
+          articleId: '',
           content: ''
         }
       }
     },
     components: {
       'markdown-editor': MarkdownEditor,
-      CommmentItem
+      'commment-item': CommmentItem
     },
     computed: {
       avatar() {
         let avatar = this.$store.state.avatar
-        if (avatar.length > 0) {
+        if (avatar != null && avatar.length > 0) {
           return avatar
         }
         return default_avatar
@@ -173,9 +179,12 @@
       getArticle() {
         let that = this
         viewArticle(that.$route.params.id).then(data => {
-          Object.assign(that.article, data.data)
-          that.article.editor.value = data.data.content
 
+          that.editor.value = data.data.archives.content
+          Object.assign(that.article, data.data.archives)
+          Object.assign(that.author, data.data.author)
+          Object.assign(that.tags, data.data.tags)
+          Object.assign(that.category, data.data.category)
           that.getCommentsByArticle()
         }).catch(error => {
           if (error !== 'error') {
@@ -188,7 +197,10 @@
         if (!that.comment.content) {
           return;
         }
-        that.comment.article.id = that.article.id
+        if(!that.$store.state.token){
+            return that.$message({type: 'error', message: '请登录后再评论', showClose: true})
+        }
+        that.comment.articleId = that.article.id
 
         publishComment(that.comment).then(data => {
           that.$message({type: 'success', message: '评论成功', showClose: true})

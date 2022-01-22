@@ -1,18 +1,12 @@
 import request from '@/request'
 
-export function getArticles(query, page) {
+export function getArticles(page) {
   return request({
     url: '/article/list',
-    method: 'get',
-    params: {
-      pageNo: page.pageNo,
-      pageSize: page.pageSize,
-      six: page.name,
-      sort: page.sort,
-      year: query.year,
-      month: query.month,
-      tagId: query.tagId,
-      categoryId: query.categoryId
+    method: 'post',
+    data: {
+      current: page.pageNo,
+      size: page.pageSize
     }
   })
 }

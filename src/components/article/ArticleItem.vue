@@ -1,7 +1,9 @@
 <template>
   <el-card class="me-area" :body-style="{ padding: '16px' }">
     <div class="me-article-header">
-      <a @click="view(id)" class="me-article-title">{{title}}</a>
+      <div class="me-a-text-width">
+      <a @click="view(id)" class="me-article-title" :title="title">{{title}}</a>
+      </div>
       <el-button v-if="weight > 0" class="me-article-icon" type="text">置顶</el-button>
       <span class="me-pull-right me-article-count">
         <i class="me-icon-comment"></i>&nbsp;{{commentNum}}
@@ -19,7 +21,7 @@
 	    	<i class="me-icon-author"></i>&nbsp;{{nickname}}
 	    </span>
 
-      <el-tag v-for="t in tags" :key="t" size="mini" type="success">{{t}}</el-tag>
+      <el-tag v-for="t in tags" :key="t.id" size="mini" type="success">{{t.tagName}}</el-tag>
 
       <span class="me-pull-right me-article-count">
 	    	<i class="el-icon-time"></i>&nbsp;{{createTime | format}}
@@ -40,7 +42,7 @@
       commentNum: Number,
       viewNum: Number,
       summary: String,
-      nickname: Object,
+      nickname: String,
       tags: Array,
       createTime: String
     },
@@ -59,8 +61,8 @@
 <style scoped>
 
   .me-article-header {
-    /*padding: 10px 18px;*/
     padding-bottom: 10px;
+    display: flex;
   }
 
   .me-article-title {
@@ -97,4 +99,14 @@
     margin-left: 6px;
   }
 
+  .me-icon-comment{
+    font-size: 13px;
+  }
+
+  .me-a-text-width{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 85%;
+  }
 </style>

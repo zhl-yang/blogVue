@@ -4,12 +4,12 @@
       <el-main>
         <div class="me-ct-title me-area">
           <template v-if="this.$route.params.type === 'tag'">
-            <img class="me-ct-picture" :src="ct.avatar?ct.avatar:defaultAvatar"/>
+            <img class="me-ct-picture" :src="ct.avatar ? `/static` + ct.avatar : defaultAvatar"/>
             <h3 class="me-ct-name">{{ct.tagName}}</h3>
           </template>
 
           <template v-else>
-            <img class="me-ct-picture" :src="ct.avatar?ct.avatar:defaultAvatar"/>
+            <img class="me-ct-picture" :src="ct.avatar ? `/static` + ct.avatar : defaultAvatar"/>
             <h3 class="me-ct-name">{{ct.categoryName}}</h3>
             <p>{{ct.description}}</p>
           </template>

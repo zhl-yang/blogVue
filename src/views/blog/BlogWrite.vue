@@ -154,13 +154,10 @@
         getArticleById(id).then(data => {
           Object.assign(that.articleForm, data.data)
           that.articleForm.editor.value = data.data.content
-
           let tags = this.articleForm.tags.map(function (item) {
             return item.id;
           })
-
           this.articleForm.tags = tags
-
         }).catch(error => {
           if (error !== 'error') {
             that.$message({type: 'error', message: '文章加载失败', showClose: true})
@@ -189,20 +186,16 @@
         let that = this
         this.$refs[articleForm].validate((valid) => {
           if (valid) {
-            let tags = this.articleForm.tags.map(function (item) {
-              return {id: item};
-            });
+            let tags = this.articleForm.tags
 
             let article = {
               id: this.articleForm.id,
               title: this.articleForm.title,
               summary: this.articleForm.summary,
-              category: this.articleForm.category,
+              categoryId: this.articleForm.category.id,
               tags: tags,
-              body: {
-                content: this.articleForm.editor.value,
-                contentHtml: this.articleForm.editor.ref.d_render
-              }
+              content: this.articleForm.editor.value,
+              contentHtml: this.articleForm.editor.ref.d_render
             }
 
             this.publishVisible = false;
@@ -215,7 +208,7 @@
             publishArticle(article).then((data) => {
               loading.close();
               that.$message({message: '发布成功啦', type: 'success', showClose: true})
-              that.$router.push({path: `/view/${data.data.articleId}`})
+              that.$router.push({path: `/view/${data.data.id}`})
             }).catch((error) => {
               loading.close();
               if (error !== 'error') {
@@ -236,6 +229,7 @@
           this.$router.push('/')
         })
       },
+
       getCategorysAndTags() {
         let that = this
         getAllCategorys().then(data => {

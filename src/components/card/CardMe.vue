@@ -1,9 +1,8 @@
 <template>
   <el-card>
-    <h1 class="me-author-name">雪山飞狐</h1>
+    <h1 class="me-author-name">松花烧饼</h1>
     <div class="me-author-description">
-      <span><i class="el-icon-location-outline"></i> &nbsp;上海&虹口</span>
-      <span><i class="me-icon-job"></i> &nbsp;Java架构师</span>
+      <span>且随疾风前行,身后亦需留心</span>
     </div>
     <div class="me-author-tool">
       <i @click="showTool(qq)" :title="qq.title" class="me-icon-QQ"></i>
@@ -17,10 +16,10 @@
     name: 'CardMe',
     data() {
       return {
-        qq: {title: 'QQ', message: '752396987'},
+        qq: {title: 'QQ', message: '959489273'},
         gitee: {
-          title: 'gitee',
-          message: '<a target="_blank" href="https://gitee.com/seu-lfh/vblog.git">https://gitee.com/seu-lfh/vblog.git</a>'
+          title: 'github',
+          message: '<a target="_blank" href="https://github.com/zhl-yang/msgWechat">https://github.com/zhl-yang/msgWechat</a>'
         }
       }
     },

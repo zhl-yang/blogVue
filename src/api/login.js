@@ -7,19 +7,21 @@ export function register(account, nickname, password) {
     password
   }
   return request({
-    url: '/register',
+    url: '/user/register',
     method: 'post',
     data
   })
 }
 
-export function login(account, password) {
+export function login(userName, passWord, uuid, captcha) {
   const data = {
-    account,
-    password
+    userName,
+    passWord,
+    uuid,
+    captcha
   }
   return request({
-    url: '/login',
+    url: '/user/login',
     method: 'post',
     data
   })
@@ -27,8 +29,18 @@ export function login(account, password) {
 
 export function logout() {
   return request({
-    url: '/logout',
+    url: '/user/logout',
     method: 'get'
+  })
+}
+
+export function captcha(userName) {
+  return request({
+    url: '/user/mail/captcha',
+    method: 'post',
+    data: {
+      userName: userName
+    }
   })
 }
 

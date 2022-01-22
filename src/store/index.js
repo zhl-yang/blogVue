@@ -1,17 +1,18 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import {getToken, setToken, removeToken} from '@/request/token'
+import {getUser, removeUser} from '@/request/user'
 import {login, getUserInfo, logout, register} from '@/api/login'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    id: '',
-    account: '',
-    name: '',
-    avatar: '',
-    token: getToken(),
+    id: getUser() ? getUser().id : '',
+    account: getUser() ? getUser().account : '',
+    name: getUser() ? getUser().nickname : '',
+    avatar: getUser() ? getUser().avatar : '',
+    token: getToken() ? getToken().token : '',
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -35,8 +36,6 @@ export default new Vuex.Store({
     login({commit}, user) {
       return new Promise((resolve, reject) => {
         login(user.account, user.password).then(data => {
-          commit('SET_TOKEN', data.data['Oauth-Token'])
-          setToken(data.data['Oauth-Token'])
           resolve()
         }).catch(error => {
           reject(error)
@@ -48,10 +47,11 @@ export default new Vuex.Store({
       let that = this
       return new Promise((resolve, reject) => {
         getUserInfo().then(data => {
+          debugger
           if (data.data) {
-            commit('SET_ACCOUNT', data.data.account)
-            commit('SET_NAME', data.data.nickname)
-            commit('SET_AVATAR', data.data.avatar)
+            commit('SET_ACCOUNT', data.data.userEntityRsp.account)
+            commit('SET_NAME', data.data.userEntityRsp.nickname)
+            commit('SET_AVATAR', data.data.userEntityRsp.avatar)
             commit('SET_ID', data.data.id)
           } else {
             commit('SET_ACCOUNT', '')
@@ -76,6 +76,7 @@ export default new Vuex.Store({
           commit('SET_AVATAR', '')
           commit('SET_ID', '')
           removeToken()
+          removeUser()
           resolve()
         }).catch(error => {
           reject(error)

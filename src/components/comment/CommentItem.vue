@@ -2,10 +2,10 @@
   <div class="me-view-comment-item">
     <div class="me-view-comment-author">
       <a class="">
-        <img class="me-view-picture" :src="comment.author.avatar"></img>
+        <img class="me-view-picture" :src="comment.author"/>
       </a>
       <div class="me-view-info">
-        <span class="me-view-nickname">{{comment.author.nickname}}</span>
+        <span class="me-view-nickname">{{comment.nickname}}</span>
         <div class="me-view-meta">
           <span>{{rootCommentCounts - index}}楼</span>
           <span>{{comment.createDate | format}}</span>
@@ -95,6 +95,9 @@
         let that = this
         if (!that.reply.content) {
           return;
+        }
+        if(!that.$store.state.token){
+            return that.$message({type: 'error', message: '请登录后再评论', showClose: true})
         }
 
         publishComment(that.reply).then(data => {

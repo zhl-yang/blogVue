@@ -7,7 +7,7 @@
       </el-main>
 
       <el-aside>
-        <card-me class="me-area"></card-me>
+        <!-- <card-me class="me-area"></card-me> -->
         <card-tag :tags="hotTags"></card-tag>
         <card-article cardHeader="最热文章" :articles="hotArticles"></card-article>
         <card-archive cardHeader="文章归档" :archives="archives"></card-archive>
@@ -25,7 +25,7 @@
   import CardTag from '@/components/card/CardTag'
   import CardArchive from '@/components/card/CardArchive'
 
-  import {getArticles, getHotArtices, getNewArtices} from '@/api/article'
+  import {getHotArtices, getNewArtices} from '@/api/article'
   import {getHotTags} from '@/api/tag'
   import {listArchives} from '@/api/article'
 
@@ -50,7 +50,7 @@
       getHotArtices() {
         let that = this
         getHotArtices().then(data => {
-          that.hotArticles = data.data
+          that.hotArticles = data.data.records
         }).catch(error => {
           if (error !== 'error') {
             that.$message({type: 'error', message: '最热文章加载失败!', showClose: true})
@@ -60,7 +60,8 @@
       getNewArtices() {
         let that = this
         getNewArtices().then(data => {
-          that.newArticles = data.data
+          that.newArticles = data.data.records
+
         }).catch(error => {
           if (error !== 'error') {
             that.$message({type: 'error', message: '最新文章加载失败!', showClose: true})
@@ -78,8 +79,9 @@
         })
       },
       listArchives() {
+        let that = this
         listArchives().then((data => {
-          this.archives = data.data
+          that.archives = data.data
         })).catch(error => {
           if (error !== 'error') {
             that.$message({type: 'error', message: '文章归档加载失败!', showClose: true})

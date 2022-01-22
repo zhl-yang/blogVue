@@ -2,20 +2,20 @@
   <el-header class="me-area">
     <el-row class="me-header">
 
-      <el-col :span="2"  offset="2" class="me-header-left">
+      <el-col :span="2"  :offset="2" class="me-header-left">
         <router-link to="/" class="me-title">
           <img src="../assets/img/logo.png"/>
         </router-link>
       </el-col>
 
-      <el-col v-if="!simple" :span="12" offset="0">
+      <el-col v-if="!simple" :span="12" :offset="0">
         <el-menu :router=true menu-trigger="click" active-text-color="#5FB878" :default-active="activeIndex"
                  mode="horizontal">
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/category/all">文章分类</el-menu-item>
           <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>
-          <el-menu-item index="/log">日志</el-menu-item>
+<!--          <el-menu-item index="/log">日志</el-menu-item>-->
           <el-menu-item index="/feedback">留言板</el-menu-item>
 
           <el-col :span="2" :offset="1">
@@ -29,7 +29,7 @@
         <slot></slot>
       </template>
 
-      <el-col :span="4" offset="0">
+      <el-col :span="4" :offset="0">
         <el-menu :router=true menu-trigger="click" mode="horizontal" active-text-color="#5FB878">
 
           <template v-if="!user.login">
@@ -46,7 +46,8 @@
               <template slot="title">
                 <img class="me-header-picture" :src="user.avatar"/>
               </template>
-              <el-menu-item index @click="logout"><i class="el-icon-back"></i>退出</el-menu-item>
+
+              <el-menu-item index @click="logoutAt"><i class="el-icon-back"></i>退出</el-menu-item>
             </el-submenu>
           </template>
         </el-menu>
@@ -57,6 +58,12 @@
 </template>
 
 <script>
+
+  import {removeToken} from '@/request/token'
+  import {removeUser, getUser} from '@/request/user'
+  import {logout} from '@/api/login'
+  import {Message} from 'element-ui'
+
   export default {
     name: 'BaseHeader',
     props: {
@@ -71,22 +78,33 @@
     },
     computed: {
       user() {
-        let login = this.$store.state.account.length != 0
-        let avatar = this.$store.state.avatar
+        let login = getUser() != null ? true : false
+        let avatar = getUser() != null && getUser().avatar ? getUser().avatar : false
+
         return {
           login, avatar
         }
       }
     },
     methods: {
-      logout() {
-        let that = this
-        this.$store.dispatch('logout').then(() => {
-          this.$router.push({path: '/'})
-        }).catch((error) => {
-          if (error !== 'error') {
-            that.$message({message: error, type: 'error', showClose: true});
-          }
+      logoutAt() {
+        let that = this;
+
+        logout().then(data => {
+
+        }).finally(() => {
+          Message({
+            type: 'success',
+            showClose: true,
+            message: "退出成功",
+            duration: 800,
+            onClose:()=>{
+              removeToken()
+              removeUser()
+              that.loginLoading = false;
+              that.$router.push({path: '/login'})
+            }
+          })
         })
       }
     }

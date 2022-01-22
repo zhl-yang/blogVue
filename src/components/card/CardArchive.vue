@@ -21,10 +21,7 @@
         type: String,
         required: true
       },
-      archives: {
-        type: Array,
-        required: true
-      }
+      archives: Array
     },
     methods: {
       view(year, month) {

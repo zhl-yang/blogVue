@@ -13,7 +13,8 @@ import BlogAllCategoryTag from '@/views/blog/BlogAllCategoryTag'
 import BlogCategoryTag from '@/views/blog/BlogCategoryTag'*/
 
 import {Message} from 'element-ui';
-import {getToken} from '@/request/token'
+import {getToken, removeToken} from '@/request/token'
+import {getUser, removeUser} from '@/request/user'
 import store from '@/store'
 
 Vue.use(Router)
@@ -82,11 +83,16 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({path: '/'})
     } else {
-      if (store.state.account.length === 0) {
+      if (getUser().account.length === 0) {
         store.dispatch('getUserInfo').then(data => { //获取用户信息
           next()
-        }).catch(() => {
-          next({path: '/'})
+        }).catch((res) => {
+          removeToken()
+          Message({
+            type: 'warning',
+            showClose: true,
+            message: '请先登录哦'
+          })
         })
       } else {
         next()

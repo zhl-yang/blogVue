@@ -1,8 +1,7 @@
 <template>
   <el-card :body-style="{ padding: '8px 18px' }">
     <div slot="header" class="me-tag-header">
-      <span>最热标签</span>
-      <a @click="moreTags" class="me-pull-right me-tag-more">查看全部</a>
+      <a @click="moreTags" class="me-tag-more">查看全部</a>
     </div>
 
     <ul class="me-tag-list">

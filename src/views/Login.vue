@@ -1,76 +1,113 @@
 <template>
   <div id="login" v-title data-title="登录 - For Fun">
-    <!--<video preload="auto" class="me-video-player" autoplay="autoplay" loop="loop">
+    <video preload="auto" class="me-video-player" autoplay="autoplay" loop="loop">
           <source src="../../static/vedio/sea.mp4" type="video/mp4">
-      </video>-->
+      </video>
 
     <div class="me-login-box me-login-box-radius">
+      <p>
+        <router-link to="/" class="me-login-design-color">返回首页</router-link>
+      </p>
       <h1>ForFun 登录</h1>
 
       <el-form ref="userForm" :model="userForm" :rules="rules">
-        <el-form-item prop="account">
-          <el-input placeholder="用户名" v-model="userForm.account"></el-input>
+        <el-form-item prop="userName">
+          <el-input placeholder="用户名（邮箱）" v-model="userForm.userName"></el-input>
         </el-form-item>
 
-        <el-form-item prop="password">
-          <el-input placeholder="密码" v-model="userForm.password"></el-input>
+        <el-form-item prop="passWord">
+          <el-input placeholder="密码" v-model="userForm.passWord" type="password"></el-input>
         </el-form-item>
 
         <el-form-item size="small" class="me-login-button">
-          <el-button type="primary" @click.native.prevent="login('userForm')">登录</el-button>
+          <el-button type="primary" @click.native.prevent="login()" v-loading="loginLoading">登录</el-button>
         </el-form-item>
       </el-form>
 
       <div class="me-login-design">
-        <p>Designed by
+        <p>没有账号，去
           <strong>
-            <router-link to="/" class="me-login-design-color">ForFun</router-link>
+            <router-link to="/register" class="me-login-design-color">注册</router-link>
           </strong>
         </p>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
+
+  import {login } from '@/api/login'
+  import {setToken} from '@/request/token'
+  import {setUser} from '@/request/user'
+  import {Message} from "element-ui";
+
   export default {
     name: 'Login',
     data() {
+      const checkEmail = (rule, value, callback) => {
+        const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+        if (!value) {
+          return callback(new Error('邮箱不能为空'))
+        }
+        setTimeout(() => {
+          if (mailReg.test(value)) {
+            callback()
+          } else {
+            callback(new Error('请输入正确的邮箱格式'))
+          }
+        }, 100)
+      };
+
       return {
+        captchaDisabled: false,
+        count: '获取验证码',
+        timer: null,
+        loginLoading: false,
         userForm: {
-          account: '',
-          password: ''
+          userName: '',
+          passWord: '',
+          uuid: '',
+          captcha:''
         },
         rules: {
-          account: [
+          userName: [
             {required: true, message: '请输入用户名', trigger: 'blur'},
-            {max: 10, message: '不能大于10个字符', trigger: 'blur'}
+            {max: 30, message: '不能大于10个字符', trigger: 'blur'},
+            {validator: checkEmail, trigger: 'blur'}
           ],
-          password: [
+          passWord: [
             {required: true, message: '请输入密码', trigger: 'blur'},
-            {max: 10, message: '不能大于10个字符', trigger: 'blur'}
+            {max: 15, message: '不能大于15个字符', trigger: 'blur'},
+            {min: 6, message: '不能小于6个字符', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
-      login(formName) {
-        let that = this
-
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            that.$store.dispatch('login', that.userForm).then(() => {
-              that.$router.go(-1)
-            }).catch((error) => {
-              if (error !== 'error') {
-                that.$message({message: error, type: 'error', showClose: true});
-              }
-            })
-          } else {
-            return false;
-          }
-        });
+      refushPath(){
+        that.$router.push({path: '/'})
+        that.$router.go(0)
+      },
+      login() {
+        let that = this;
+        that.loginLoading = true;
+        login(that.userForm.userName, that.userForm.passWord, that.userForm.uuid, that.userForm.captcha).then(data => {
+          setToken(data.data.tokenRsp);
+          setUser(data.data.userEntityRsp);
+          Message({
+            type: 'success',
+            showClose: true,
+            message: "登录成功",
+            duration: 1000,
+            onClose:()=>{
+              that.loginLoading = false;
+              that.$router.push({path: '/'})
+            }
+          })
+        }).finally(() => {
+          that.loginLoading = false;
+        })
       }
     }
   }
@@ -97,7 +134,6 @@
   .me-login-box {
     position: absolute;
     width: 300px;
-    height: 260px;
     background-color: white;
     margin-top: 150px;
     margin-left: -180px;
