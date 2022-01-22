@@ -22,6 +22,7 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
+
     //全局统一处理 Session超时
     if (response.headers['session_time_out'] == 'timeout') {
       store.dispatch('fedLogOut')
@@ -38,14 +39,14 @@ service.interceptors.response.use(
       //401 用户未登录
       else if (res.status === 401) {
         console.info("用户未登录")
+
         Message({
           type: 'warning',
           showClose: true,
-          message: '未登录或登录超时，请重新登录哦'
+          message: '未登录或登录超时，请重新登录哦',
+          duration: 1200
         })
-
         // store.dispatch('fedLogOut')
-
         return Promise.reject('error');
       }
 
@@ -66,7 +67,7 @@ service.interceptors.response.use(
         })
 
       }
-      removeToke
+
       return Promise.reject(res.message);
 
     } else {

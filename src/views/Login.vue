@@ -1,8 +1,8 @@
 <template>
   <div id="login" v-title data-title="登录 - For Fun">
-    <video preload="auto" class="me-video-player" autoplay="autoplay" loop="loop">
-          <source src="../../static/vedio/sea.mp4" type="video/mp4">
-      </video>
+<!--    <video preload="auto" class="me-video-player" autoplay="autoplay" loop="loop">-->
+<!--          <source src="../../static/vedio/sea.mp4" type="video/mp4">-->
+<!--      </video>-->
 
     <div class="me-login-box me-login-box-radius">
       <p>
@@ -85,10 +85,7 @@
       }
     },
     methods: {
-      refushPath(){
-        that.$router.push({path: '/'})
-        that.$router.go(0)
-      },
+
       login() {
         let that = this;
         that.loginLoading = true;

@@ -96,8 +96,8 @@
         if (!that.reply.content) {
           return;
         }
-        if(!that.$store.state.token){
-            return that.$message({type: 'error', message: '请登录后再评论', showClose: true})
+        if(that.$store.state.token){
+          return that.$message({type: 'error', message: '请登录后再评论', showClose: true})
         }
 
         publishComment(that.reply).then(data => {

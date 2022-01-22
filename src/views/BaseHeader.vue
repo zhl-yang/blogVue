@@ -90,22 +90,34 @@
       logoutAt() {
         let that = this;
 
-        logout().then(data => {
-
-        }).finally(() => {
-          Message({
-            type: 'success',
-            showClose: true,
-            message: "退出成功",
-            duration: 800,
-            onClose:()=>{
-              removeToken()
-              removeUser()
-              that.loginLoading = false;
-              that.$router.push({path: '/login'})
-            }
-          })
+        Message({
+          type: 'success',
+          showClose: true,
+          message: "退出成功",
+          duration: 800,
+          onClose:()=>{
+            removeToken()
+            removeUser()
+            that.loginLoading = false;
+            that.$router.push({path: '/login'})
+          }
         })
+        // logout().then(data => {
+        //
+        // }).finally(() => {
+        //   Message({
+        //     type: 'success',
+        //     showClose: true,
+        //     message: "退出成功",
+        //     duration: 800,
+        //     onClose:()=>{
+        //       removeToken()
+        //       removeUser()
+        //       that.loginLoading = false;
+        //       that.$router.push({path: '/login'})
+        //     }
+        //   })
+        // })
       }
     }
   }

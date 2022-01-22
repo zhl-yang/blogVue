@@ -54,11 +54,11 @@ export default new Vuex.Store({
             commit('SET_AVATAR', data.data.userEntityRsp.avatar)
             commit('SET_ID', data.data.id)
           } else {
+            removeToken()
             commit('SET_ACCOUNT', '')
             commit('SET_NAME', '')
             commit('SET_AVATAR', '')
             commit('SET_ID', '')
-            removeToken()
           }
           resolve(data)
         }).catch(error => {
@@ -70,13 +70,13 @@ export default new Vuex.Store({
     logout({commit, state}) {
       return new Promise((resolve, reject) => {
         logout().then(data => {
+          removeToken()
+          removeUser()
           commit('SET_TOKEN', '')
           commit('SET_ACCOUNT', '')
           commit('SET_NAME', '')
           commit('SET_AVATAR', '')
           commit('SET_ID', '')
-          removeToken()
-          removeUser()
           resolve()
         }).catch(error => {
           reject(error)
@@ -86,12 +86,14 @@ export default new Vuex.Store({
     // 前端 登出
     fedLogOut({commit}) {
       return new Promise(resolve => {
+        removeToken()
+        removeUser()
         commit('SET_TOKEN', '')
         commit('SET_ACCOUNT', '')
         commit('SET_NAME', '')
         commit('SET_AVATAR', '')
         commit('SET_ID', '')
-        removeToken()
+
         resolve()
       }).catch(error => {
         reject(error)

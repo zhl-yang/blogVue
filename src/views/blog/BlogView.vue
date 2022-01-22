@@ -197,7 +197,7 @@
         if (!that.comment.content) {
           return;
         }
-        if(!that.$store.state.token){
+        if(that.$store.state.token){
             return that.$message({type: 'error', message: '请登录后再评论', showClose: true})
         }
         that.comment.articleId = that.article.id
