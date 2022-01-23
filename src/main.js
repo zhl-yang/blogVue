@@ -6,6 +6,8 @@ import store from './store'
 import lodash from 'lodash'
 import ElementUI from 'element-ui'
 
+import 'element-ui/lib/theme-chalk/index.css'
+
 import '@/assets/theme/index.css'
 import '@/assets/icon/iconfont.css'
 
