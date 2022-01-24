@@ -70,6 +70,13 @@ service.interceptors.response.use(
 
       return Promise.reject(res.message);
 
+    } else if(res.status === 500){
+      Message({
+        type: 'warning',
+        showClose: true,
+        message: res.message
+      })
+      return Promise.reject('error');
     } else {
       return response.data;
     }

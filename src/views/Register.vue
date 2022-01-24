@@ -1,9 +1,5 @@
 <template>
   <div id="register" v-title data-title="注册 - For Fun">
-    <video preload="auto" class="me-video-player" autoplay="autoplay" loop="loop">
-          <source src="../../static/vedio/sea.mp4" type="video/mp4">
-      </video>
-
     <div class="me-login-box me-login-box-radius">
       <p>
         <router-link to="/" class="me-login-design-color">返回首页</router-link>
@@ -20,7 +16,7 @@
         </el-form-item>
 
         <el-form-item prop="passWord">
-          <el-input placeholder="密码" v-model="userForm.passWord"></el-input>
+          <el-input placeholder="密码" v-model="userForm.passWord" type="password"></el-input>
         </el-form-item>
 
         <el-form-item prop="captcha">
@@ -29,7 +25,7 @@
         </el-form-item>
 
         <el-form-item size="small" class="me-login-button">
-          <el-button type="primary" @click.native.prevent="register('userForm')">注册</el-button>
+          <el-button type="primary" @click.native.prevent="register('userForm')" v-loading="loginLoading">注册</el-button>
         </el-form-item>
       </el-form>
 
@@ -46,8 +42,10 @@
 </template>
 
 <script>
-  import {register} from '@/api/login'
-  import { captcha} from '@/api/login'
+  import {register,captcha} from '@/api/login'
+  import {Message} from "element-ui";
+  import {setToken} from '@/request/token'
+  import {setUser} from '@/request/user'
 
   export default {
     name: 'Register',
@@ -80,7 +78,7 @@
         rules: {
           userName: [
             {required: true, message: '请输入用户名', trigger: 'blur'},
-            {max: 10, message: '不能大于10个字符', trigger: 'blur'},
+            {max: 30, message: '不能大于30个字符', trigger: 'blur'},
             {validator: checkEmail, trigger: 'blur'}
           ],
           nickname: [
@@ -100,14 +98,27 @@
         let that = this
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            that.$store.dispatch('register', that.userForm).then(() => {
-              that.$message({message: '注册成功 快写文章吧', type: 'success', showClose: true});
-              that.$router.push({path: '/'})
+            register(that.userForm.userName, that.userForm.nickname, that.userForm.passWord, that.userForm.uuid, that.userForm.captcha).then(data => {
+              setToken(data.data.tokenRsp);
+              setUser(data.data.userEntityRsp);
+              Message({
+                type: 'success',
+                showClose: true,
+                message: "注册成功 快写文章吧",
+                duration: 1000,
+                onClose:()=>{
+                  that.loginLoading = false;
+                  that.$router.push({path: '/'})
+                }
+              })
             }).catch((error) => {
               if (error !== 'error') {
                 that.$message({message: error, type: 'error', showClose: true});
               }
+            }).finally(() => {
+              that.loginLoading = false;
             })
+
           } else {
             return false;
           }
@@ -117,7 +128,6 @@
       captcha() {
         let that = this;
         this.getCode();
-
         captcha(that.userForm.userName).then(data => {
           that.userForm.uuid = data.data.uuid;
           Message({

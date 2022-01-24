@@ -1,10 +1,12 @@
 import request from '@/request'
 
-export function register(account, nickname, password) {
+export function register(userName, nickname, passWord, uuid, captcha) {
   const data = {
-    account,
+    userName,
     nickname,
-    password
+    passWord,
+    uuid,
+    captcha
   }
   return request({
     url: '/user/register',

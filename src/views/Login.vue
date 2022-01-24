@@ -1,9 +1,5 @@
 <template>
   <div id="login" v-title data-title="登录 - For Fun">
-<!--    <video preload="auto" class="me-video-player" autoplay="autoplay" loop="loop">-->
-<!--          <source src="../../static/vedio/sea.mp4" type="video/mp4">-->
-<!--      </video>-->
-
     <div class="me-login-box me-login-box-radius">
       <p>
         <router-link to="/" class="me-login-design-color">返回首页</router-link>
@@ -73,7 +69,7 @@
         rules: {
           userName: [
             {required: true, message: '请输入用户名', trigger: 'blur'},
-            {max: 30, message: '不能大于10个字符', trigger: 'blur'},
+            {max: 30, message: '不能大于30个字符', trigger: 'blur'},
             {validator: checkEmail, trigger: 'blur'}
           ],
           passWord: [

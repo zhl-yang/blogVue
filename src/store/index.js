@@ -47,7 +47,6 @@ export default new Vuex.Store({
       let that = this
       return new Promise((resolve, reject) => {
         getUserInfo().then(data => {
-          debugger
           if (data.data) {
             commit('SET_ACCOUNT', data.data.userEntityRsp.account)
             commit('SET_NAME', data.data.userEntityRsp.nickname)
