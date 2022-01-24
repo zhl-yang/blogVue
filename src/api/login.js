@@ -38,6 +38,16 @@ export function logout() {
 
 export function captcha(userName) {
   return request({
+    url: '/user/captcha',
+    method: 'get',
+    params: {
+      userName: userName
+    }
+  })
+}
+
+export function mailCaptcha(userName) {
+  return request({
     url: '/user/mail/captcha',
     method: 'post',
     data: {
