@@ -1,12 +1,13 @@
 import request from '@/request'
 
-export function getArticles(page) {
+export function getArticles(page, article) {
   return request({
     url: '/article/list',
     method: 'post',
     data: {
       current: page.pageNo,
-      size: page.pageSize
+      size: page.pageSize,
+      article: article
     }
   })
 }

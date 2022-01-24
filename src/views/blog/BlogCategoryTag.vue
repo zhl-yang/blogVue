@@ -18,7 +18,7 @@
         </div>
 
         <div class="me-ct-articles">
-          <article-scroll-page v-bind="article"></article-scroll-page>
+          <article-scroll-page :article="article"></article-scroll-page>
         </div>
       </el-main>
     </el-container>
@@ -42,10 +42,8 @@
         defaultAvatar: defaultAvatar,
         ct: {},
         article: {
-          query: {
-            tagId: '',
-            categoryId: ''
-          }
+          tagId: '',
+          categoryId: ''
         },
       }
     },
@@ -69,10 +67,10 @@
         let type = this.$route.params.type
         if ('tag' === type) {
           this.getTagDetail(id)
-          this.article.query.tagId = id
+          this.article.tagId = id
         } else {
           this.getCategoryDetail(id)
-          this.article.query.categoryId = id
+          this.article.categoryId = id
         }
       },
       getCategoryDetail(id) {

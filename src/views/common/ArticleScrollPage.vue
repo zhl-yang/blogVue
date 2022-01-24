@@ -23,7 +23,7 @@
           return {}
         }
       },
-      query: {
+      article: {
         type: Object,
         default() {
           return {}
@@ -31,7 +31,7 @@
       }
     },
     watch: {
-      'query': {
+      'article': {
         handler() {
           this.noData = false
           this.articles = []
@@ -75,7 +75,7 @@
       getArticles() {
         let that = this
         that.loading = true
-        getArticles(that.innerPage).then(data => {
+        getArticles(that.innerPage, that.article).then(data => {
           let newArticles = data.data.records
           if (newArticles && newArticles.length > 0) {
             that.innerPage.pageNo += 1
