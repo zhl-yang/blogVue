@@ -54,6 +54,7 @@
 
 <script>
   import {publishComment} from '@/api/comment'
+  import {getToken} from '@/request/token'
 
   export default {
     name: "CommentItem",
@@ -96,7 +97,8 @@
         if (!that.reply.content) {
           return;
         }
-        if(that.$store.state.token){
+        that.$store.state.token = getToken() ? getToken().token : ''
+        if(!that.$store.state.token){
           return that.$message({type: 'error', message: '请登录后再评论', showClose: true})
         }
 
