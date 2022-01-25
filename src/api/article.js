@@ -33,6 +33,14 @@ export function viewArticle(id) {
   })
 }
 
+export function removeArticle(id) {
+  return request({
+    url: `/article/delete/${id}`,
+    method: 'get'
+  })
+}
+
+
 export function getArticleById(id) {
   return request({
     url: `/article/${id}`,

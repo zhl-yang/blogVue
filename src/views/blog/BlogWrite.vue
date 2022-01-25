@@ -7,7 +7,7 @@
         </el-col>
         <el-col :span="4" :offset="2">
           <div class="me-write-btn">
-            <el-button round @click="publishShow">发布</el-button>
+            <el-button round @click="publishShow">{{articleForm.id ? '修改' : '发布'}}</el-button>
             <el-button round @click="cancel">取消</el-button>
           </div>
         </el-col>
@@ -56,7 +56,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="publishVisible = false">取 消</el-button>
-          <el-button type="primary" @click="publish('articleForm')">发布</el-button>
+          <el-button type="primary" @click="publish('articleForm')">{{articleForm.id ? '修改' : '发布'}}</el-button>
         </div>
       </el-dialog>
     </el-container>
@@ -120,7 +120,7 @@
         rules: {
           summary: [
             {required: true, message: '请输入摘要', trigger: 'blur'},
-            {max: 80, message: '不能大于80个字符', trigger: 'blur'}
+            {max: 800, message: '不能大于800个字符', trigger: 'blur'}
           ],
           category: [
             {required: true, message: '请选择文章分类', trigger: 'change'}
@@ -152,8 +152,10 @@
       getArticleById(id) {
         let that = this
         getArticleById(id).then(data => {
-          Object.assign(that.articleForm, data.data)
-          that.articleForm.editor.value = data.data.content
+          Object.assign(that.articleForm, data.data.archives)
+          that.articleForm.tags = data.data.tags
+          that.articleForm.category = data.data.category
+          that.articleForm.editor.value = data.data.archives.content
           let tags = this.articleForm.tags.map(function (item) {
             return item.id;
           })
@@ -197,17 +199,16 @@
               content: this.articleForm.editor.value,
               contentHtml: this.articleForm.editor.ref.d_render
             }
-
             this.publishVisible = false;
-
+            var msg = that.articleForm.id ? '修改' : '发布'
             let loading = this.$loading({
               lock: true,
-              text: '发布中，请稍后...'
+              text: msg + '中，请稍后...'
             })
 
             publishArticle(article).then((data) => {
               loading.close();
-              that.$message({message: '发布成功啦', type: 'success', showClose: true})
+              that.$message({message: msg + '成功啦', type: 'success', showClose: true})
               that.$router.push({path: `/view/${data.data.id}`})
             }).catch((error) => {
               loading.close();

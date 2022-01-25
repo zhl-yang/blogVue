@@ -26,12 +26,21 @@
             <el-button
               v-if="this.author.id == this.$store.state.id"
               @click="editArticle()"
-              style="position: absolute; left: 60%"
+              style="margin-left: 50px;"
               size="mini"
               type="success"
               round
               icon="el-icon-edit"
               >编辑</el-button
+            >
+            <el-button
+              v-if="this.author.id == this.$store.state.id"
+              @click="removeArticle()"
+              size="mini"
+              type="primary"
+              round
+              icon="el-icon-delete"
+              >删除</el-button
             >
           </div>
           <div class="me-view-content">
@@ -133,10 +142,12 @@
 <script>
 import MarkdownEditor from "@/components/markdown/MarkdownEditor";
 import CommmentItem from "@/components/comment/CommentItem";
-import { viewArticle } from "@/api/article";
+import { viewArticle, removeArticle } from "@/api/article";
 import { getCommentsByArticle, publishComment } from "@/api/comment";
 import { getToken } from "@/request/token";
 import default_avatar from "@/assets/img/default_avatar.png";
+import {Message} from "element-ui";
+
 
 export default {
   name: "BlogView",
@@ -200,6 +211,30 @@ export default {
     },
     editArticle() {
       this.$router.push({ path: `/write/${this.article.id}` });
+    },
+    removeArticle(){
+      var that = this;
+      removeArticle(that.$route.params.id)
+        .then((data) => {
+          Message({
+            type: 'success',
+            showClose: true,
+            message: "文章删除成功",
+            duration: 1000,
+            onClose:()=>{
+              that.loginLoading = false;
+              that.$router.push({path: '/'})
+            }
+          })
+        }).catch((error) => {
+          if (error !== "error") {
+            that.$message({
+              type: "error",
+              message: "文章删除失败",
+              showClose: true,
+            });
+          }
+        });
     },
     getArticle() {
       let that = this;
@@ -293,10 +328,12 @@ export default {
 <style>
 .me-view-body {
   margin: 100px auto 140px;
+  width: 100%;
 }
 
 .me-view-container {
-  width: 700px;
+  width: 70%;
+  margin: auto
 }
 
 .el-main {
