@@ -347,9 +347,9 @@ export default {
 }
 
 .me-view-author {
-  /*margin: 30px 0;*/
   margin-top: 30px;
   vertical-align: middle;
+  margin-bottom: 10px;
 }
 
 .me-view-picture {
@@ -406,7 +406,7 @@ export default {
 }
 
 .v-show-content {
-  padding: 29px 25px 15px 25px !important;
+  padding: 25px 25px 15px 25px !important;
 }
 
 .v-note-wrapper .v-note-panel {

@@ -156,10 +156,6 @@
     font-size: 16px;
   }
 
-  .v-show-content {
-    padding: 8px 25px 15px 0px !important;
-  }
-
   .v-note-wrapper .v-note-panel {
     box-shadow: none !important;
   }

@@ -58,4 +58,5 @@
   .v-note-wrapper.fullscreen {
     top: 60px !important
   }
+  
 </style>
