@@ -349,7 +349,7 @@ export default {
 .me-view-author {
   margin-top: 30px;
   vertical-align: middle;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .me-view-picture {
