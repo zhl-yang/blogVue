@@ -406,7 +406,7 @@ export default {
 }
 
 .v-show-content {
-  padding: 8px 25px 15px 0px !important;
+  padding: 29px 25px 15px 25px !important;
 }
 
 .v-note-wrapper .v-note-panel {
@@ -416,5 +416,9 @@ export default {
 .v-note-wrapper .v-note-panel .v-note-show .v-show-content,
 .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
   background: #fff !important;
+}
+
+.me-view-comment .me-view-comment.div{
+  border-radius: 28px 0;
 }
 </style>
