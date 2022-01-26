@@ -4,7 +4,7 @@
       <p>
         <router-link to="/" class="me-login-design-color">返回首页</router-link>
       </p>
-      <h1>ForFun 登录</h1>
+      <h1>zhloong的博客 登录</h1>
 
       <el-form ref="userForm" :model="userForm" :rules="rules">
         <el-form-item prop="userName">

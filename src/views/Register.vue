@@ -1,10 +1,10 @@
 <template>
-  <div id="register" v-title data-title="注册 - For Fun">
+  <div id="register" v-title data-title="注册 - Blog">
     <div class="me-login-box me-login-box-radius">
       <p>
         <router-link to="/" class="me-login-design-color">返回首页</router-link>
       </p>
-      <h1>ForFun 注册</h1>
+      <h1>zhloong的博客 注册</h1>
 
       <el-form ref="userForm" :model="userForm" :rules="rules">
         <el-form-item prop="userName">
