@@ -1,5 +1,5 @@
 <template>
-  <div id="login" v-title data-title="登录 - For Fun">
+  <div id="login" v-title data-title="登录 - Blog">
     <div class="me-login-box me-login-box-radius">
       <p>
         <router-link to="/" class="me-login-design-color">返回首页</router-link>

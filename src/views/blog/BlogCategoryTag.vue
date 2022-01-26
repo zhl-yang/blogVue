@@ -56,9 +56,9 @@
     computed: {
       title() {
         if(this.$route.params.type === 'tag'){
-          return `${this.ct.tagName} - 标签 - For Fun`
+          return `${this.ct.tagName} - 标签 - Blog`
         }
-        return `${this.ct.categoryName} - 文章分类 - For Fun`
+        return `${this.ct.categoryName} - 文章分类 - Blog`
       }
     },
     methods: {

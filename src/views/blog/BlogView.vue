@@ -199,7 +199,7 @@ export default {
       return default_avatar;
     },
     title() {
-      return `${this.article.title} - 文章 - For Fun`;
+      return `${this.article.title} - 文章 - Blog`;
     },
   },
   created() {

@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     title() {
-      return "留言板 - For Fun";
+      return "留言板 - Blog";
     },
   },
   methods: {
