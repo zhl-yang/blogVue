@@ -50,7 +50,7 @@
       getHotArtices() {
         let that = this
         getHotArtices().then(data => {
-          that.hotArticles = data.data.records
+          that.hotArticles = data.data
         }).catch(error => {
           if (error !== 'error') {
             that.$message({type: 'error', message: '最热文章加载失败!', showClose: true})
@@ -60,7 +60,7 @@
       getNewArtices() {
         let that = this
         getNewArtices().then(data => {
-          that.newArticles = data.data.records
+          that.newArticles = data.data
 
         }).catch(error => {
           if (error !== 'error') {
