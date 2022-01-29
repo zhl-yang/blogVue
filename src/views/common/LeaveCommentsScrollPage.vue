@@ -1,17 +1,17 @@
 <template>
   <scroll-page :loading="loading" :offset="offset" :no-data="noData" v-on:load="load">
-    <article-item v-for="a in articles" :key="a.id" v-bind="a"></article-item>
+    <leave-comment-item v-for="a in leaveComments" :key="a.id" v-bind="a"></leave-comment-item>
   </scroll-page>
   
 </template>
 
 <script>
-  import ArticleItem from '@/components/article/ArticleItem'
+  import {getLeaveCommentsByArticle} from "@/api/leaveComment";
+  import LeaveCommentItem from '@/components/leave/LeaveCommentItem'
   import ScrollPage from '@/components/scrollpage'
-  import {getArticles} from '@/api/article'
 
   export default {
-    name: "ArticleScrollPage",
+    name: "LeaveCommentsScrollPage",
     props: {
       offset: {
         type: Number,
@@ -22,30 +22,15 @@
         default() {
           return {}
         }
-      },
-      article: {
-        type: Object,
-        default() {
-          return {}
-        }
       }
     },
     watch: {
-      'article': {
-        handler() {
-          this.noData = false
-          this.articles = []
-          this.innerPage.pageNo = 1
-          this.getArticles()
-        },
-        deep: true
-      },
       'page': {
         handler() {
           this.noData = false
-          this.articles = []
+          this.leaveComments = []
           this.innerPage = this.page
-          this.getArticles()
+          this.getLeaveCommentsByArticle()
         },
         deep: true
       }
@@ -58,35 +43,33 @@
           pageSize: 10,
           pageNo: 1
         },
-        articles: []
+        leaveComments: []
       }
     },
     components: {
-      'article-item': ArticleItem,
+      'leave-comment-item': LeaveCommentItem,
       'scroll-page': ScrollPage
     },
     methods: {
       load() {
-        this.getArticles()
+        this.getLeaveCommentsByArticle()
       },
-      view(id) {
-        this.$router.push({path: `/view/${id}`})
-      },
-      getArticles() {
+      getLeaveCommentsByArticle() {
         let that = this
         that.loading = true
-        getArticles(that.innerPage, that.article).then(data => {
-          let newArticles = data.data.records
-          if (newArticles && newArticles.length > 0) {
+        getLeaveCommentsByArticle(that.innerPage).then(data => {
+          let newLeaveComments = data.data.records
+          debugger
+          if (newLeaveComments && newLeaveComments.length > 0) {
             that.innerPage.pageNo += 1
-            that.articles = that.articles.concat(newArticles)
+            that.leaveComments = that.leaveComments.concat(newLeaveComments)
           } else {
             that.noData = true
           }
 
         }).catch(error => {
           if (error !== 'error') {
-            that.$message({type: 'error', message: '文章加载失败!', showClose: true})
+            that.$message({type: 'error', message: '留言加载失败!', showClose: true})
           }
         }).finally(() => {
           that.loading = false
@@ -95,7 +78,7 @@
       }
     },
     created() {
-      this.getArticles()
+      this.getLeaveCommentsByArticle()
     }
   }
 </script>

@@ -148,7 +148,6 @@ import { getToken } from "@/request/token";
 import default_avatar from "@/assets/img/default_avatar.png";
 import {Message} from "element-ui";
 
-
 export default {
   name: "BlogView",
   watch: {

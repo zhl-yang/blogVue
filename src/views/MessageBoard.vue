@@ -7,11 +7,11 @@
             <el-timeline-item
               v-for="(item, index) in allmessages"
               :key="index"
-              :timestamp="item.createTime"
+              :timestamp="item.createDate"
               placement="top"
             >
               <el-card class="el-card-m" style="height: 120px">
-                <h4>{{ item.userName }}：</h4>
+                <h4>{{ item.nickname }}：</h4>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}</p>
               </el-card>
             </el-timeline-item>
@@ -43,12 +43,22 @@
         >
       </div>
     </el-card>
+
+     <leave-page>
+          </leave-page>
   </div>
 </template>
 
 <script>
+
+import LeaveCommentScrollPage from '@/views/common/LeaveCommentsScrollPage'
+import {publishLeaveComment} from "@/api/leaveComment";
+
 export default {
   name: "MessageBoard",
+  components: {
+    'leave-page': LeaveCommentScrollPage
+  },
   data() {
     return {
       message: "",
@@ -70,7 +80,23 @@ export default {
         return;
       }
       //  这里往下写调用后端的代码；
+      this.publishLeaveComment()
+
     },
+    publishLeaveComment() {
+      let that = this
+      that.loading = true
+      publishLeaveComment(that.message).then(data => {
+
+      }).catch(error => {
+        if (error !== 'error') {
+          that.$message({type: 'error', message: '留言失败!', showClose: true})
+        }
+      }).finally(() => {
+        that.loading = false
+      })
+
+    }
   },
 };
 </script>
