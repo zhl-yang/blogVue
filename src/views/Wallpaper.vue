@@ -24,7 +24,7 @@ export default {
     autoGetWallpaper(){
         getWallpaper("6").then(data => {
           if(data.data != null ){
-            this.orignalImg = data.data.img_1600_900
+            this.orignalImg = data.data.img1600900
           }
         }).catch(()=>{
             this.orignalImg = this.defaultImg
