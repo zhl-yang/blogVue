@@ -66,6 +66,10 @@ const router = new Router({
     {
       path: '/register',
       component: r => require.ensure([], () => r(require('@/views/Register')), 'register')
+    },
+    {
+      path: '/wallpaper',
+      component: r => require.ensure([], () => r(require('@/views/Wallpaper')), 'wallpaper')
     }
   ],
   scrollBehavior(to, from, savedPosition) {
