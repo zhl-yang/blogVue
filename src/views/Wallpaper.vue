@@ -36,7 +36,7 @@ export default {
     this.autoGetWallpaper();
     this.timer = setInterval(() => {
        setTimeout(this.autoGetWallpaper, 0)
-    }, 1000 * 60)
+    }, 1000 * 60 * 60)
   }
 };
 </script>
