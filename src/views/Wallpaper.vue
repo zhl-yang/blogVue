@@ -70,8 +70,8 @@ export default {
       },
       tags: [
         {
-          id: 6,
-          name: "美女",
+          id: null,
+          name: "其他分类",
         },
       ],
       imgTypes: [
