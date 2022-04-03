@@ -64,14 +64,14 @@ export default {
       clickTimer: null,
       popupVisible1: true,
       form: {
-        tagId: 0,
+        tagId: 6,
         imgType: "img1600900",
         time: 60,
       },
       tags: [
         {
-          id: 0,
-          name: "其他分类",
+          id: 6,
+          name: "美女模特",
         },
       ],
       imgTypes: [
