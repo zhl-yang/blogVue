@@ -64,7 +64,7 @@ export default {
       clickTimer: null,
       popupVisible1: true,
       form: {
-        tagId: 6,
+        tagId: '6',
         imgType: "img1600900",
         time: 60,
       },
