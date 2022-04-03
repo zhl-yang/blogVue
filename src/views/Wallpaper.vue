@@ -113,9 +113,6 @@ export default {
       this.clickTimer = setTimeout(() => {
         //这里执行你自己的方法或者业务逻辑
         var tagIds = this.form.tagId;
-        if (tagIds == 0 || tagIds == null) {
-          tagIds = 6;
-        }
         getWallpaper(tagIds)
           .then((data) => {
             if (data.data != null) {
