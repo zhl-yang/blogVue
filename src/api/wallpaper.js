@@ -6,3 +6,10 @@ export function getWallpaper(tagId) {
     method: 'get',
   })
 }
+
+export function getTags() {
+  return request({
+    url: `/wallpaper/getTag`,
+    method: 'get',
+  })
+}
