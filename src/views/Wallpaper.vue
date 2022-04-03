@@ -122,6 +122,15 @@ export default {
               } else {
                 this.orignalImg = data.data.img1600900;
               }
+              if(tagIds != data.data.classId){
+                Message({
+                  type: 'warning',
+                  showClose: true,
+                  message: '当前标签无壁纸，系统已自动为您分配新的标签',
+                  duration: 1000
+                })
+                this.form.tagId = data.data.classId
+              }
             }
           })
           .catch(() => {
