@@ -64,13 +64,13 @@ export default {
       clickTimer: null,
       popupVisible1: true,
       form: {
-        tagId: '6',
+        tagId: 0,
         imgType: "img1600900",
         time: 60,
       },
       tags: [
         {
-          id: null,
+          id: 0,
           name: "其他分类",
         },
       ],
