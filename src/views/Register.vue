@@ -33,12 +33,12 @@
             v-model="userForm.captcha"
             type="text"
           ></el-input>
-          <img v-if="captchaImage" class="me-login-captcha captcha-image" :src="captchaImage" title="点击重新获取" @click="captcha()"/>
+          <!-- <img v-if="captchaImage" class="me-login-captcha captcha-image" :src="captchaImage" title="点击重新获取" @click="captcha()"/>
           <el-button class="captcha-button" v-else type="primary" @click.native.prevent="captcha()"
             >获取验证码</el-button
-          >
+          > -->
 
-          <!-- <el-button  type="primary" :disabled="captchaDisabled" @click.native.prevent="mailCaptcha()">{{count}}</el-button> -->
+          <el-button  type="primary" :disabled="captchaDisabled" @click.native.prevent="mailCaptcha()">{{count}}</el-button>
         </el-form-item>
         <el-form-item size="small" class="me-login-button">
           <el-button
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { register, captcha } from "@/api/login";
+import { register, captcha, mailCaptcha } from "@/api/login";
 import { Message } from "element-ui";
 import { setToken } from "@/request/token";
 import { setUser } from "@/request/user";
