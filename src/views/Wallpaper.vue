@@ -7,7 +7,6 @@
       @click="autoGetWallpaper()"
       @dblclick="openSelect()"
     />
-
     <template>
       <div class="bobo" v-show="showPrise">
         <el-form ref="form" :model="form" label-width="100px">
