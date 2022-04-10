@@ -1,9 +1,14 @@
 import request from '@/request'
 
-export function getWallpaper(tagId) {
+export function getWallpaper(classId, resolution) {
+  const data = {
+    classId,
+    resolution
+  }
   return request({
-    url: `/wallpaper?tagId=${tagId}`,
-    method: 'get',
+    url: `/wallpaper`,
+    method: 'post',
+    data
   })
 }
 

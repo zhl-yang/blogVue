@@ -43,6 +43,13 @@
           </el-form-item>
           <el-button type="primary" @click="onSubmit">立即修改</el-button>
           <el-button @click="onClose">取消</el-button>
+
+          <p class="design">Designed by
+            <strong>
+              <router-link to="/" class="design-color">zhloong的博客</router-link>
+            </strong>
+          </p>
+
         </el-form>
       </div>
     </template>
@@ -75,29 +82,9 @@ export default {
       ],
       imgTypes: [
         {
-          code: "img1024768",
-          des: "1024 * 768",
-        },
-        {
-          code: "img1280800",
-          des: "1280 * 800",
-        },
-        {
-          code: "img1366768",
-          des: "1366 * 768",
-        },
-        {
-          code: "img1440900",
-          des: "1440 * 900",
-        },
-        {
           code: "img1600900",
           des: "1600 * 900",
-        },
-        {
-          code: "img12801024",
-          des: "1280 * 1024",
-        },
+        }
       ],
     };
   },
@@ -112,10 +99,11 @@ export default {
       this.clickTimer = setTimeout(() => {
         //这里执行你自己的方法或者业务逻辑
         var tagIds = this.form.tagId;
-        getWallpaper(tagIds)
+        var imgType = this.form.imgType;
+
+        getWallpaper(tagIds, imgType)
           .then((data) => {
             if (data.data != null) {
-              var imgType = this.form.imgType;
               if (imgType != null) {
                 this.orignalImg = data.data[imgType];
               } else {
@@ -132,9 +120,11 @@ export default {
               }
             }
           })
-          .catch(() => {
-            this.orignalImg = this.defaultImg;
-          })
+          .catch(error => {
+          reject(error)
+          this.orignalImg = this.defaultImg;
+
+        })
           .finally(() => {});
       }, 300);
     },
@@ -163,7 +153,8 @@ export default {
     getTagList() {
       getTags().then((data) => {
         if (data.data != null) {
-          this.tags = data.data;
+          this.tags = data.data.tags;
+          this.imgTypes = data.data.sizes;
         }
       });
     },
@@ -196,7 +187,6 @@ export default {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   width: 361px;
-  height: 300px;
   padding: 7%;
   float: left;
   position: relative;
@@ -216,5 +206,11 @@ export default {
   font-size: 2em;
   color: #606266;
   margin-top: -10px;
+}
+.design{
+  margin-top: 1.5em;
+}
+.design-color {
+  color: #5FB878 !important;
 }
 </style>
