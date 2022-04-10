@@ -6,7 +6,7 @@ export function getWallpaper(classId, resolution) {
     resolution
   }
   return request({
-    url: `/wallpaper`,
+    url: `/wallpaper/auto`,
     method: 'post',
     data
   })
